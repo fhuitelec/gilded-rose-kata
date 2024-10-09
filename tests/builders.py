@@ -5,14 +5,20 @@ from typing import Self
 
 SULFURAS = "Sulfuras, Hand of Ragnaros"
 AGED_BRIE = "Aged Brie"
+BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
 
 
 @dataclass
 class ItemBuilder:
+    name: str = None
     ennobles: bool = False
     legendary: bool = False
     sell_date: int = 4
     quality: int = 5
+
+    def with_name(self, name: str) -> Self:
+        self.name = name
+        return self
 
     def with_quality(self, quality: int) -> Self:
         self.quality = quality
@@ -41,6 +47,8 @@ class ItemBuilder:
         return Item(self._name(), sell_in=self.sell_date, quality=self.quality)
 
     def _name(self) -> str:
+        if self.name is not None:
+            return self.name
         if self.ennobles:
             return AGED_BRIE
         if self.legendary:
