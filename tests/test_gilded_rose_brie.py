@@ -1,7 +1,5 @@
 from gilded_rose.gilded_rose import Item, GildedRose
-
-
-AGED_BRIE = "Aged Brie"
+from tests.builders import AGED_BRIE
 
 
 def test_brie_ennobles_with_time():
