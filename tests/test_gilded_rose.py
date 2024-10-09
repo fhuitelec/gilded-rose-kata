@@ -7,29 +7,40 @@ from tests.builders import given_an_item
 #   - I initially had one test which tested quality & sell-in simultaneously
 #   - degrade antonym
 # - use the exact same terminology from the requirement (degrades, etc.)
+# - builder for the quality cannot exceed 50 because it's tightly coupled to Aged Brie or equivalent
 
-def test_sell_in_decreases_with_time():
+def test_sell_date_decreases_with_time():
     # Arrange
-    items = [Item("foo", sell_in=3, quality=5)]
+    items = [
+        Item("foo", sell_in=3, quality=5),
+        Item("foo", sell_in=2, quality=4),
+    ]
 
     # Act
     sut = GildedRose(items)
     sut.update_quality()
 
     # Assert
+    assert len(items) == 2
     assert items[0].sell_in == 2
+    assert items[1].sell_in == 1
 
 
 def test_quality_degrades_with_time():
     # Arrange
-    items = [Item("foo", sell_in=3, quality=5)]
+    items = [
+        Item("foo", sell_in=3, quality=5),
+        Item("foo", sell_in=2, quality=4),
+    ]
 
     # Act
     sut = GildedRose(items)
     sut.update_quality()
 
     # Assert
+    assert len(items) == 2
     assert items[0].quality == 4
+    assert items[1].quality == 3
 
 
 def test_quality_degrades_twice_as_much_when_sell_date_has_passed():
