@@ -26,3 +26,5 @@ def test_brie_ennobles_twice_as_much_when_sell_date_has_passed():
 
     # Assert
     assert items[0].quality == 4
+
+# What happens if an item is >50 when being constructed?

@@ -1,4 +1,5 @@
 from gilded_rose.gilded_rose import Item, GildedRose
+from tests.builders import given_an_item
 
 
 # Notes:
@@ -53,3 +54,15 @@ def test_quality_cannot_get_negative():
 
     # Assert
     assert items[0].quality == 0
+
+
+def test_an_item_quality_cannot_exceed_50_with_time():
+    # Arrange
+    item = given_an_item().that_ennobles_with_time().with_quality(50).build()
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert item.quality == 50
