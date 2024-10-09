@@ -41,9 +41,6 @@ class ItemBuilder:
         return self
 
     def build(self) -> Item:
-        name = AGED_BRIE if self.ennobles else "foo"
-        name = SULFURAS if self.legendary else "foo"
-
         return Item(self._name(), sell_in=self.sell_date, quality=self.quality)
 
     def _name(self) -> str:

@@ -12,8 +12,8 @@ import pytest
 
 def test_sell_date_decreases_with_time():
     items = [
-        Item("foo", sell_in=3, quality=5),
-        Item("foo", sell_in=2, quality=4),
+        given_an_item().with_sell_date(3).build(),
+        given_an_item().with_sell_date(2).build(),
     ]
 
     sut = GildedRose(items)
@@ -26,8 +26,8 @@ def test_sell_date_decreases_with_time():
 
 def test_quality_degrades_with_time():
     items = [
-        Item("foo", sell_in=3, quality=5),
-        Item("foo", sell_in=2, quality=4),
+        given_an_item().with_quality(5).build(),
+        given_an_item().with_quality(4).build(),
     ]
 
     sut = GildedRose(items)
@@ -39,21 +39,21 @@ def test_quality_degrades_with_time():
 
 
 def test_quality_degrades_twice_as_much_when_sell_date_has_passed():
-    items = [Item("foo", sell_in=0, quality=5)]
+    item = given_an_item().with_sell_date(0).with_quality(5).build()
 
-    sut = GildedRose(items)
+    sut = GildedRose([item])
     sut.update_quality()
 
-    assert items[0].quality == 3
+    assert item.quality == 3
 
 
 def test_quality_cannot_get_negative():
-    items = [Item("foo", sell_in=5, quality=0)]
+    item = given_an_item().with_sell_date(5).with_quality(0).build()
 
-    sut = GildedRose(items)
+    sut = GildedRose([item])
     sut.update_quality()
 
-    assert items[0].quality == 0
+    assert item.quality == 0
 
 
 def test_an_item_quality_cannot_exceed_50_with_time():
