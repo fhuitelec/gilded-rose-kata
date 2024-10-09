@@ -1,5 +1,6 @@
 from gilded_rose.gilded_rose import Item, GildedRose
 from tests.builders import given_an_item
+import pytest
 
 
 # Notes:
@@ -77,3 +78,9 @@ def test_an_item_quality_cannot_exceed_50_with_time():
 
     # Assert
     assert item.quality == 50
+
+
+@pytest.mark.skip(reason="the Item class does not check this behaviour for now")
+def test_an_item_quality_cannot_exceed_50_when_declared():
+    with pytest.raises(ValueError):
+        given_an_item().with_quality(60).build()
