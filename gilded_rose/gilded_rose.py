@@ -38,17 +38,20 @@ class Item:
         quality_multiplier = 2 if self.sell_in <= 0 else 1
 
         sell_in = self.sell_in - 1
-        quality = max(self.quality - quality_multiplier, 0)
+        quality = self.quality - quality_multiplier
 
         if self.ennobles:
-            quality = min(self.quality + quality_multiplier, 50)
+            quality = self.quality + quality_multiplier
 
         if self.legendary:
             sell_in = self.sell_in
             quality = self.quality
 
         if self.backstage:
-            quality = min(BackstagePassStrategy.update_quality(self), 50)
+            quality = BackstagePassStrategy.update_quality(self)
+
+        quality = min(quality, 50)
+        quality = max(quality, 0)
 
         return Item(self.name, self.ennobles, self.legendary, self.backstage, sell_in, quality)
 
