@@ -1,8 +1,28 @@
 import copy
+from abc import ABC, abstractmethod
 
 
 def update_quality(items):
     return [item.age() for item in items]
+
+
+class QualityStrategy(ABC):
+    @classmethod
+    @abstractmethod
+    def update_quality(item):
+        pass
+
+
+class BackstagePassStrategy(QualityStrategy):
+    def update_quality(item):
+        if item.sell_in <= 0:
+            return 0
+        if item.sell_in <= 5:
+            return item.quality + 3
+        if item.sell_in <= 10:
+            return item.quality + 2
+
+        return item.quality + 1
 
 
 class Item:
@@ -28,14 +48,7 @@ class Item:
             quality = self.quality
 
         if self.backstage:
-            quality = min(self.quality + 1, 50)
-            if self.sell_in <= 10:
-                quality = min(self.quality + 2, 50)
-            if self.sell_in <= 5:
-                quality = min(self.quality + 3, 50)
-
-            if self.sell_in <= 0:
-                quality = 0
+            quality = min(BackstagePassStrategy.update_quality(self), 50)
 
         return Item(self.name, self.ennobles, self.legendary, self.backstage, sell_in, quality)
 
