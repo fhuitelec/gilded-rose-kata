@@ -2,36 +2,7 @@ import copy
 
 
 def update_quality(items):
-    new_items = []
-    for old_item in items:
-        item = copy.deepcopy(old_item)
-
-        if item.name != "Backstage passes to a TAFKAL80ETC concert":
-            new_items.append(item.age())
-            continue
-
-        if item.quality < 50:
-            item.quality = item.quality + 1
-            if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                if item.sell_in < 11:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-                if item.sell_in < 6:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-        if item.name != "Sulfuras, Hand of Ragnaros":
-            item.sell_in = item.sell_in - 1
-        if item.sell_in < 0:
-            if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        item.quality = item.quality - 1
-            else:
-                item.quality = item.quality - item.quality
-
-        new_items.append(item)
-    
-    return new_items
+    return [item.age() for item in items]
 
 
 class Item:
@@ -56,14 +27,17 @@ class Item:
             sell_in = self.sell_in
             quality = self.quality
 
-        return Item(
-            self.name,
-            self.ennobles,
-            self.legendary,
-            self.backstage,
-            sell_in,
-            quality
-        )
+        if self.backstage:
+            quality = min(self.quality + 1, 50)
+            if self.sell_in <= 10:
+                quality = min(self.quality + 2, 50)
+            if self.sell_in <= 5:
+                quality = min(self.quality + 3, 50)
+
+            if self.sell_in <= 0:
+                quality = 0
+
+        return Item(self.name, self.ennobles, self.legendary, self.backstage, sell_in, quality)
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)

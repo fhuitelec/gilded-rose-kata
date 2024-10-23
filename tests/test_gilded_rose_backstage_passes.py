@@ -3,7 +3,7 @@ from tests.builders import BACKSTAGE_PASSES, given_an_item
 
 
 def test_backstage_passes_ennobles_with_time():
-    item = given_an_item().with_name(BACKSTAGE_PASSES).with_sell_date(20).with_quality(5).build()
+    item = given_an_item().with_name(BACKSTAGE_PASSES).that_is_backstage().with_sell_date(20).with_quality(5).build()
 
     updated_items = update_quality([item])
 
@@ -11,7 +11,7 @@ def test_backstage_passes_ennobles_with_time():
 
 
 def test_backstage_passes_ennobles_twice_as_much_when_sell_date_is_less_than_10_days():
-    item = given_an_item().with_name(BACKSTAGE_PASSES).with_sell_date(8).with_quality(5).build()
+    item = given_an_item().with_name(BACKSTAGE_PASSES).that_is_backstage().with_sell_date(8).with_quality(5).build()
 
     updated_items = update_quality([item])
 
@@ -19,7 +19,7 @@ def test_backstage_passes_ennobles_twice_as_much_when_sell_date_is_less_than_10_
 
 
 def test_backstage_passes_ennobles_three_times_as_much_when_sell_date_is_less_than_5_days():
-    item = given_an_item().with_name(BACKSTAGE_PASSES).with_sell_date(4).with_quality(5).build()
+    item = given_an_item().with_name(BACKSTAGE_PASSES).that_is_backstage().with_sell_date(4).with_quality(5).build()
 
     updated_items = update_quality([item])
 
@@ -27,7 +27,7 @@ def test_backstage_passes_ennobles_three_times_as_much_when_sell_date_is_less_th
 
 
 def test_backstage_passes_quality_drops_to_zero_when_sell_date_has_passed():
-    item = given_an_item().with_name(BACKSTAGE_PASSES).with_sell_date(-1).with_quality(5).build()
+    item = given_an_item().with_name(BACKSTAGE_PASSES).that_is_backstage().with_sell_date(-1).with_quality(5).build()
 
     updated_items = update_quality([item])
 
