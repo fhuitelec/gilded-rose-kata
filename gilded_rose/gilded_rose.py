@@ -3,57 +3,45 @@ from abc import ABC, abstractmethod
 
 
 def update_quality(items):
-    return [item.age() for item in items]
+    return [item.update_quality() for item in items]
 
 
 class QualityStrategy(ABC):
     @classmethod
     @abstractmethod
-    def update_quality(item):
+    def get_quality(self, item):
         pass
 
 
-class BackstagePassStrategy(QualityStrategy):
-    def update_quality(item):
-        if item.sell_in <= 0:
-            return 0
-        if item.sell_in <= 5:
-            return item.quality + 3
-        if item.sell_in <= 10:
-            return item.quality + 2
-
-        return item.quality + 1
+class SellStrategy(ABC):
+    @abstractmethod
+    def get_sell_date(self, item):
+        pass
 
 
 class Item:
-    def __init__(self, name, ennobles, legendary, backstage, sell_in, quality):
+    def __init__(
+        self,
+        name: str,
+        quality_strategy: QualityStrategy,
+        sell_strategy: SellStrategy,
+        sell_in: int,
+        quality: int
+    ):
         self.name = name
-        self.ennobles = ennobles
-        self.legendary = legendary
-        self.backstage = backstage
+        self.quality_strategy = quality_strategy
+        self.sell_strategy = sell_strategy
         self.sell_in = sell_in
         self.quality = quality
 
-    def age(self) -> "Item":
-        quality_multiplier = 2 if self.sell_in <= 0 else 1
+    def update_quality(self) -> "Item":
+        sell_in = self.sell_strategy.get_sell_date(self)
+        quality = self.quality_strategy.get_quality(self)
 
-        sell_in = self.sell_in - 1
-        quality = self.quality - quality_multiplier
-
-        if self.ennobles:
-            quality = self.quality + quality_multiplier
-
-        if self.legendary:
-            sell_in = self.sell_in
-            quality = self.quality
-
-        if self.backstage:
-            quality = BackstagePassStrategy.update_quality(self)
-
-        quality = min(quality, 50)
         quality = max(quality, 0)
+        quality = min(quality, 50)
 
-        return Item(self.name, self.ennobles, self.legendary, self.backstage, sell_in, quality)
+        return Item(self.name, self.quality_strategy, self.sell_strategy, sell_in, quality)
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)

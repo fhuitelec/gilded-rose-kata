@@ -1,4 +1,5 @@
 from gilded_rose.gilded_rose import Item
+from gilded_rose.strategies import ClassicStrategy, BonnifyingStrategy, LegendaryQualityStrategy, BackstagePassStrategy, LegendarySellStrategy, ClassicSellStrategy
 from dataclasses import dataclass
 from typing import Self
 
@@ -46,11 +47,18 @@ class ItemBuilder:
         return self
 
     def build(self) -> Item:
+        quality_strategy = ClassicStrategy()
+        if self.ennobles:
+            quality_strategy = BonnifyingStrategy()
+        if self.legendary:
+            quality_strategy = LegendaryQualityStrategy()
+        if self.backstage:
+            quality_strategy = BackstagePassStrategy()
+
         return Item(
             self._name(),
-            ennobles=self.ennobles,
-            legendary=self.legendary,
-            backstage=self.backstage,
+            quality_strategy=quality_strategy,
+            sell_strategy=LegendarySellStrategy() if self.legendary else ClassicSellStrategy(),
             sell_in=self.sell_date,
             quality=self.quality
         )
