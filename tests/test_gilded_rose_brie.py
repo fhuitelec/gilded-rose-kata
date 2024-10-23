@@ -3,7 +3,7 @@ from tests.builders import AGED_BRIE, given_an_item
 
 
 def test_brie_ennobles_with_time():
-    item = given_an_item().with_name(AGED_BRIE).with_quality(2).build()
+    item = given_an_item().with_name(AGED_BRIE).that_ennobles_with_time().with_quality(2).build()
 
     updated_items = update_quality([item])
 
@@ -11,7 +11,7 @@ def test_brie_ennobles_with_time():
 
 
 def test_brie_ennobles_twice_as_much_when_sell_date_has_passed():
-    item = given_an_item().with_name(AGED_BRIE).with_sell_date(0).with_quality(2).build()
+    item = given_an_item().with_name(AGED_BRIE).that_ennobles_with_time().with_sell_date(0).with_quality(2).build()
 
     updated_items = update_quality([item])
 

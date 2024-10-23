@@ -6,10 +6,8 @@ def update_quality(items):
     for old_item in items:
         item = copy.deepcopy(old_item)
 
-        if item.name != "Aged Brie"\
-            and item.name != "Backstage passes to a TAFKAL80ETC concert":
+        if item.name != "Backstage passes to a TAFKAL80ETC concert":
             new_items.append(item.age())
-
             continue
 
         if item.quality < 50:
@@ -24,16 +22,12 @@ def update_quality(items):
         if item.name != "Sulfuras, Hand of Ragnaros":
             item.sell_in = item.sell_in - 1
         if item.sell_in < 0:
-            if item.name != "Aged Brie":
-                if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                    if item.quality > 0:
-                        if item.name != "Sulfuras, Hand of Ragnaros":
-                            item.quality = item.quality - 1
-                else:
-                    item.quality = item.quality - item.quality
+            if item.name != "Backstage passes to a TAFKAL80ETC concert":
+                if item.quality > 0:
+                    if item.name != "Sulfuras, Hand of Ragnaros":
+                        item.quality = item.quality - 1
             else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
+                item.quality = item.quality - item.quality
 
         new_items.append(item)
     
