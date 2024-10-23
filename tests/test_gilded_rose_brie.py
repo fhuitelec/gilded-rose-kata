@@ -1,20 +1,18 @@
-from gilded_rose.gilded_rose import Item, GildedRose
+from gilded_rose.gilded_rose import Item, update_quality
 from tests.builders import AGED_BRIE, given_an_item
 
 
 def test_brie_ennobles_with_time():
     item = given_an_item().with_name(AGED_BRIE).with_quality(2).build()
 
-    sut = GildedRose([item])
-    sut.update_quality()
+    updated_items = update_quality([item])
 
-    assert item.quality == 3
+    assert updated_items[0].quality == 3
 
 
 def test_brie_ennobles_twice_as_much_when_sell_date_has_passed():
     item = given_an_item().with_name(AGED_BRIE).with_sell_date(0).with_quality(2).build()
 
-    sut = GildedRose([item])
-    sut.update_quality()
+    updated_items = update_quality([item])
 
-    assert item.quality == 4
+    assert updated_items[0].quality == 4

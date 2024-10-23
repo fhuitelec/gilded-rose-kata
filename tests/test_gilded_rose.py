@@ -1,4 +1,4 @@
-from gilded_rose.gilded_rose import Item, GildedRose
+from gilded_rose.gilded_rose import Item, update_quality
 from tests.builders import given_an_item
 import pytest
 
@@ -16,12 +16,11 @@ def test_sell_date_decreases_with_time():
         given_an_item().with_sell_date(2).build(),
     ]
 
-    sut = GildedRose(items)
-    sut.update_quality()
+    updated_items = update_quality(items)
 
     assert len(items) == 2
-    assert items[0].sell_in == 2
-    assert items[1].sell_in == 1
+    assert updated_items[0].sell_in == 2
+    assert updated_items[1].sell_in == 1
 
 
 def test_quality_degrades_with_time():
@@ -30,39 +29,35 @@ def test_quality_degrades_with_time():
         given_an_item().with_quality(4).build(),
     ]
 
-    sut = GildedRose(items)
-    sut.update_quality()
+    updated_items = update_quality(items)
 
-    assert len(items) == 2
-    assert items[0].quality == 4
-    assert items[1].quality == 3
+    assert len(updated_items) == 2
+    assert updated_items[0].quality == 4
+    assert updated_items[1].quality == 3
 
 
 def test_quality_degrades_twice_as_much_when_sell_date_has_passed():
     item = given_an_item().with_sell_date(0).with_quality(5).build()
 
-    sut = GildedRose([item])
-    sut.update_quality()
+    updated_items = update_quality([item])
 
-    assert item.quality == 3
+    assert updated_items[0].quality == 3
 
 
 def test_quality_cannot_get_negative():
     item = given_an_item().with_sell_date(5).with_quality(0).build()
 
-    sut = GildedRose([item])
-    sut.update_quality()
+    updated_items = update_quality([item])
 
-    assert item.quality == 0
+    assert updated_items[0].quality == 0
 
 
 def test_an_item_quality_cannot_exceed_50_with_time():
     item = given_an_item().that_ennobles_with_time().with_quality(50).build()
 
-    sut = GildedRose([item])
-    sut.update_quality()
+    updated_items = update_quality([item])
 
-    assert item.quality == 50
+    assert updated_items[0].quality == 50
 
 
 @pytest.mark.skip(reason="the Item class does not check this behaviour for now")

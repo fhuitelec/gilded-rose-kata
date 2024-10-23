@@ -1,4 +1,4 @@
-from gilded_rose.gilded_rose import Item, GildedRose
+from gilded_rose.gilded_rose import Item
 from dataclasses import dataclass
 from typing import Self
 
@@ -13,6 +13,7 @@ class ItemBuilder:
     name: str = None
     ennobles: bool = False
     legendary: bool = False
+    backstage: bool = False
     sell_date: int = 4
     quality: int = 5
 
@@ -40,8 +41,19 @@ class ItemBuilder:
         self.legendary = True
         return self
 
+    def that_is_backstage(self) -> Self:
+        self.backstage = True
+        return self
+
     def build(self) -> Item:
-        return Item(self._name(), sell_in=self.sell_date, quality=self.quality)
+        return Item(
+            self._name(),
+            ennobles=self.ennobles,
+            legendary=self.legendary,
+            backstage=self.backstage,
+            sell_in=self.sell_date,
+            quality=self.quality
+        )
 
     def _name(self) -> str:
         if self.name is not None:
