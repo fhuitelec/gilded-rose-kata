@@ -1,4 +1,4 @@
-from gilded_rose.gilded_rose import Item, GildedRose
+from gilded_rose.inn import GildedRose, Item
 
 
 def test_foo():

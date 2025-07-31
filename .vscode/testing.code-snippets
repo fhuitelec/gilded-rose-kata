@@ -1,0 +1,15 @@
+{
+	"Arrange/Act/Assert test": {
+		"scope": "python",
+		"prefix": "aaa",
+		"body": [
+			"# Arrange",
+			"$1",
+			"# Act",
+			"",
+			"# Assert",
+			""
+		],
+		"description": "Add Arrange/Act/Assert test structure"
+	}
+}
