@@ -30,7 +30,7 @@
             "${workspaceFolder}/src"
           ],
           "python.testing.pytestArgs": [
-            "src"
+            "tests"
           ],
           "python.testing.unittestEnabled": false,
           "python.testing.pytestEnabled": true
@@ -42,7 +42,8 @@
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
         "ms-python.pylint",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "yzhang.markdown-all-in-one"
       ]
     }
   }
