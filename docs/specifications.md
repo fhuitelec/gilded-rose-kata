@@ -14,15 +14,15 @@ Nous avons un système en place qui met à jour notre inventaire automatiquement
 
 Voici d'abord une introduction à notre système :
 
-- [ ] Tous les `items` ont une valeur `sell_in` qui indique le nombre de jours qu’il nous reste pour les vendre  
-- [ ] Tous les `items` ont une valeur de `quality` qui indique à quel point l’article est précieux  
-- [ ] À la fin de chaque journée, notre système diminue ces deux valeurs pour chaque item
+- [x] Tous les `items` ont une valeur `sell_in` qui indique le nombre de jours qu’il nous reste pour les vendre  
+- [x] Tous les `items` ont une valeur de `quality` qui indique à quel point l’article est précieux  
+- [x] À la fin de chaque journée, notre système diminue ces deux valeurs pour chaque item
 
 Assez simple, non ? C’est là que ça devient intéressant :
 
-- [ ] Une fois la date limite dépassée, la `quality` diminue deux fois plus vite  
-- [ ] La `quality` d’un item n’est jamais négative  
-- [ ] `"Aged Brie"` augmente en fait en `quality` avec le temps
+- [x] Une fois la date limite dépassée, la `quality` diminue deux fois plus vite  
+- [x] La `quality` d’un item n’est jamais négative  
+- [x] `"Aged Brie"` augmente en fait en `quality` avec le temps
 - [ ] La `quality` d’un item ne dépasse jamais `50`
 - [ ] `"Sulfuras"`, en tant qu’item légendaire, n’a jamais besoin d’être vendu et ne perd jamais en `quality`
 - [ ] Les `"Backstage passes"`, comme le `"Aged Brie"`, augmentent en `quality` à mesure que leur `sell_in` approche :
