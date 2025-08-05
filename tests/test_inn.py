@@ -1,5 +1,7 @@
 """Test suite for the golded rose inn package."""
 
+import pytest
+
 from gilded_rose.inn import GildedRose, Item
 
 AGED_BRIE = "Aged Brie"
@@ -100,3 +102,26 @@ def test_aged_brie_ennobles_twice_as_fast_when_it_is_expired():
 
     # Assert
     assert items[0].quality == 4
+
+
+def test_quality_cannot_exceed_50():
+    """Test items' quality cannot go over 50."""
+    # Arrange
+    items = [
+        Item(AGED_BRIE, sell_in=1, quality=50),
+    ]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert items[0].quality == 50
+
+
+@pytest.mark.skip(reason="This behaviour has not been implemeted yet.")
+def test_quality_cannot_exceed_50_when_instanciated():
+    """Test items' quality cannot go over 50 at its creation."""
+    # Arrange
+    with pytest.raises(ValueError):
+        Item(AGED_BRIE, sell_in=1, quality=50)
