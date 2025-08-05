@@ -1,7 +1,10 @@
+"""Test suite for the golded rose inn package."""
+
 from gilded_rose.inn import GildedRose, Item
 
 
 def test_foo():
+    """Dummy test."""
     items = [Item("foo", 0, 0)]
     gilded_rose = GildedRose(items)
     gilded_rose.update_quality()
