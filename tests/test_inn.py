@@ -15,7 +15,7 @@ def test_quality_degrades_over_time():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 19
+    assert gilded_rose.items[0].quality == 19
 
 
 def test_sell_in_date_decreases_over_time():
@@ -28,7 +28,7 @@ def test_sell_in_date_decreases_over_time():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].sell_in == 9
+    assert gilded_rose.items[0].sell_in == 9
 
 
 def test_quality_degrades_twice_as_fast_after_sell_in_date_is_passed():
@@ -41,7 +41,7 @@ def test_quality_degrades_twice_as_fast_after_sell_in_date_is_passed():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 18
+    assert gilded_rose.items[0].quality == 18
 
 
 def test_quality_cannot_get_negative():
@@ -54,7 +54,7 @@ def test_quality_cannot_get_negative():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 0
+    assert gilded_rose.items[0].quality == 0
 
 
 def test_aged_brie_ennobles_quality_over_time():
@@ -67,7 +67,7 @@ def test_aged_brie_ennobles_quality_over_time():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 21
+    assert gilded_rose.items[0].quality == 21
 
 
 def test_quality_cannot_exceed_50():
@@ -80,7 +80,7 @@ def test_quality_cannot_exceed_50():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 50
+    assert gilded_rose.items[0].quality == 50
 
 
 def test_ennobling_items_ennobles_twice_as_fast_after_sell_in_date_is_passed():
@@ -93,7 +93,7 @@ def test_ennobling_items_ennobles_twice_as_fast_after_sell_in_date_is_passed():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 22
+    assert gilded_rose.items[0].quality == 22
 
 
 def test_legendary_never_sells_or_degrades():
@@ -106,8 +106,8 @@ def test_legendary_never_sells_or_degrades():
     gilded_rose.update_quality()
 
     # Assert
-    assert items[0].quality == 80
-    assert items[0].sell_in == 0
+    assert gilded_rose.items[0].quality == 80
+    assert gilded_rose.items[0].sell_in == 0
 
 
 def test_backstage_passes_ennobles_with_time():
@@ -120,7 +120,7 @@ def test_backstage_passes_ennobles_with_time():
     sut.update_quality()
 
     # Assert
-    assert item.quality == 6
+    assert sut.items[0].quality == 6
 
 
 def test_backstage_passes_ennobles_twice_as_much_when_sell_date_is_less_than_10_days():
@@ -133,7 +133,7 @@ def test_backstage_passes_ennobles_twice_as_much_when_sell_date_is_less_than_10_
     sut.update_quality()
 
     # Assert
-    assert item.quality == 7
+    assert sut.items[0].quality == 7
 
 
 def test_backstage_passes_ennobles_three_times_as_much_when_sell_date_is_less_than_5_days():
@@ -146,7 +146,7 @@ def test_backstage_passes_ennobles_three_times_as_much_when_sell_date_is_less_th
     sut.update_quality()
 
     # Assert
-    assert item.quality == 8
+    assert sut.items[0].quality == 8
 
 
 def test_backstage_passes_quality_drops_to_zero_when_sell_date_has_passed():
@@ -159,4 +159,4 @@ def test_backstage_passes_quality_drops_to_zero_when_sell_date_has_passed():
     sut.update_quality()
 
     # Assert
-    assert item.quality == 0
+    assert sut.items[0].quality == 0
