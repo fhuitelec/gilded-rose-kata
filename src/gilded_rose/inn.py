@@ -19,22 +19,22 @@ class Item:  # pylint: disable=too-few-public-methods
     @property
     def _ennobling(self):
         """Returns whether the item ennobles over time."""
-        return self.name == AGED_BRIE
+        return self.name.endswith(AGED_BRIE)
 
     @property
     def _legendary(self):
         """Returns whether the item is legendary or not."""
-        return self.name == SULFURAS
+        return self.name.endswith(SULFURAS)
+
+    @property
+    def _backstage_passes(self):
+        """Returns whether the item is a backstage pass or not."""
+        return self.name.endswith(BACKSTAGE_PASSES)
 
     @property
     def _conjured(self):
         """Returns whether the item is a conjured item or not."""
         return self.name.startswith(CONJURED_PREFIX)
-
-    @property
-    def _backstage_passes(self):
-        """Returns whether the item is a backstage pass or not."""
-        return self.name == BACKSTAGE_PASSES
 
     def compute_after_a_day(self) -> "Item":
         """Compute the state of the item after a day."""
@@ -45,7 +45,7 @@ class Item:  # pylint: disable=too-few-public-methods
         sell_in = self.sell_in - 1
 
         if self._ennobling:
-            quality = min(50, self.quality + quality_variation)
+            quality = min(50, self.quality + quality_variation * quality_multiplier)
 
         if self._legendary:
             quality = 80
