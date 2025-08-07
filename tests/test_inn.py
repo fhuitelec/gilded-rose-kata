@@ -117,3 +117,29 @@ def test_quality_cannot_exceed_50_when_instanciated():
     # Act & assert
     with pytest.raises(ValueError):
         builder.build()
+
+
+def test_legendary_items_quality_stays_the_same_with_time():
+    """Test legendary items' quality stays the same over time."""
+    # Arrange
+    items = [an_item().legendary().with_quality(5).build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert items[0].quality == 5
+
+
+def test_legendary_items_sell_in_stays_the_same_with_time():
+    """Test legendary items' sell-in date stays the same over time."""
+    # Arrange
+    items = [an_item().legendary().sell_in(5).build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert items[0].sell_in == 5
