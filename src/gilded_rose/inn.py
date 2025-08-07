@@ -3,12 +3,56 @@
 import copy
 from dataclasses import dataclass
 
+AGED_BRIE = "Aged Brie"
+SULFURAS = "Sulfuras, Hand of Ragnaros"
+BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
 
-def update_quality(items):  # pylint: disable=too-many-branches
+
+@dataclass
+class Item:  # pylint: disable=too-few-public-methods
+    """Class representing an item in the Gilded Rose inventory.
+
+    Todo: make Item a frozen dataclass
+    """
+
+    name: str
+    sell_in: int
+    quality: int
+
+    def _ennobling(self):
+        """Returns whether the item ennobles over time."""
+        return self.name == AGED_BRIE
+
+    def _legendary(self):
+        """Returns whether the item is legendary or not."""
+        return self.name == SULFURAS
+
+    def _backstage_passes(self):
+        """Returns whether the item is a backstage pass or not."""
+        return self.name == BACKSTAGE_PASSES
+
+    def compute_after_a_day(self) -> "Item":
+        """Compute the state of the item after a day."""
+        quality_decrease = 1 if self.sell_in > 0 else 2
+
+        quality = max(0, self.quality - quality_decrease)
+
+        return Item(self.name, sell_in=self.sell_in - 1, quality=quality)
+
+    def __repr__(self):
+        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)  # pylint: disable=consider-using-f-string
+
+
+def update_quality(items: list[Item]):  # pylint: disable=too-many-branches
     """Update the quality and sell-in values of items in the inventory."""
     new_items = []
     for old_item in items:  # pylint: disable=too-many-nested-blocks
         item = copy.deepcopy(old_item)
+
+        if item.name not in (AGED_BRIE, BACKSTAGE_PASSES, SULFURAS):
+            new_items.append(item.compute_after_a_day())
+            continue
+
         if (
             item.name != "Aged Brie"  # pylint: disable=consider-using-in
             and item.name != "Backstage passes to a TAFKAL80ETC concert"
@@ -53,16 +97,3 @@ class GildedRose:  # pylint: disable=too-few-public-methods
     def update_quality(self):
         """Update the quality of items in the inventory."""
         self.items = update_quality(self.items)
-
-
-# Todo: make Item a frozen dataclass
-@dataclass
-class Item:  # pylint: disable=too-few-public-methods
-    """Class representing an item in the Gilded Rose inventory."""
-
-    name: str
-    sell_in: int
-    quality: int
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)  # pylint: disable=consider-using-f-string
