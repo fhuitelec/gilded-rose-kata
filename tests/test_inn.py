@@ -94,3 +94,17 @@ def test_ennobling_items_ennobles_twice_as_fast_after_sell_in_date_is_passed():
 
     # Assert
     assert items[0].quality == 22
+
+
+def test_legendary_items_sell_in_date_and_quality_do_not_decrease():
+    """Test that the sell-in date and quality of legendary items do not decrease."""
+    # Arrange
+    items = [an_item().legendary().with_quality(10).sell_in(5).build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert items[0].quality == 10
+    assert items[0].sell_in == 5

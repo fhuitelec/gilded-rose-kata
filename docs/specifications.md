@@ -24,7 +24,7 @@ Assez simple, non ? C’est là que ça devient intéressant :
 - [x] La `quality` d’un item n’est jamais négative  
 - [x] `"Aged Brie"` augmente en fait en `quality` avec le temps
 - [x] La `quality` d’un item ne dépasse jamais `50`
-- [ ] `"Sulfuras"`, en tant qu’item légendaire, n’a jamais besoin d’être vendu et ne perd jamais en `quality`
+- [x] `"Sulfuras"`, en tant qu’item légendaire, n’a jamais besoin d’être vendu et ne perd jamais en `quality`
 - [ ] Les `"Backstage passes"`, comme le `"Aged Brie"`, augmentent en `quality` à mesure que leur `sell_in` approche :
   - [ ] La `quality` augmente de `2` lorsqu’il reste `10` jours ou moins, et de `3` lorsqu’il reste `5` jours ou moins, mais
   - [ ] La `quality` tombe à `0` après le concert
