@@ -160,3 +160,29 @@ def test_backstage_passes_quality_drops_to_zero_when_sell_date_has_passed():
 
     # Assert
     assert sut.items[0].quality == 0
+
+
+def test_conjured_items_degrade_twice_as_fast():
+    """Test that the quality of conjured items degrades twice as fast."""
+    # Arrange
+    items = [Item("Conjured Mana Cake", sell_in=3, quality=6)]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert gilded_rose.items[0].quality == 4
+
+
+def test_conjured_items_degrade_4_times_as_fast_after_sell_in_date_is_passed():
+    """Test that the quality of conjured items degrades four times as fast after the sell-in date."""
+    # Arrange
+    items = [Item("Conjured Mana Cake", sell_in=0, quality=6)]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert gilded_rose.items[0].quality == 2

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 AGED_BRIE = "Aged Brie"
 SULFURAS = "Sulfuras, Hand of Ragnaros"
 BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
+CONJURED_PREFIX = "Conjured "
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,11 @@ class Item:  # pylint: disable=too-few-public-methods
         return self.name == SULFURAS
 
     @property
+    def _conjured(self):
+        """Returns whether the item is a conjured item or not."""
+        return self.name.startswith(CONJURED_PREFIX)
+
+    @property
     def _backstage_passes(self):
         """Returns whether the item is a backstage pass or not."""
         return self.name == BACKSTAGE_PASSES
@@ -33,8 +39,9 @@ class Item:  # pylint: disable=too-few-public-methods
     def compute_after_a_day(self) -> "Item":
         """Compute the state of the item after a day."""
         quality_variation = 1 if self.sell_in > 0 else 2
+        quality_multiplier = 2 if self._conjured else 1
 
-        quality = max(0, self.quality - quality_variation)
+        quality = max(0, self.quality - quality_variation * quality_multiplier)
         sell_in = self.sell_in - 1
 
         if self._ennobling:
