@@ -1,4 +1,9 @@
-from gilded_rose.inn import *
+"""Entrypoint for the gilded rose inn package."""
+
+
+# pylint: disable-all
+
+from gilded_rose.inn import GildedRose, Item
 
 if __name__ == "__main__":
     items = [
