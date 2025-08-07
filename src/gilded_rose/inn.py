@@ -7,12 +7,9 @@ SULFURAS = "Sulfuras, Hand of Ragnaros"
 BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Item:  # pylint: disable=too-few-public-methods
-    """Class representing an item in the Gilded Rose inventory.
-
-    Todo: make Item a frozen dataclass
-    """
+    """Class representing an item in the Gilded Rose inventory."""
 
     name: str
     sell_in: int
