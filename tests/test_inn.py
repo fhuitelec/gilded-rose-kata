@@ -210,3 +210,17 @@ def test_conjured_ennobling_items_ennobles_four_times_as_fast_after_sell_in_date
 
     # Assert
     assert gilded_rose.items[0].quality == 24
+
+
+def test_conjured_legendary_items_never_degrade():
+    """Test that conjured legendary items do not degrade."""
+    # Arrange
+    items = [an_item().conjured().legendary().build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert gilded_rose.items[0].quality == 80
+    assert gilded_rose.items[0].sell_in == 0
