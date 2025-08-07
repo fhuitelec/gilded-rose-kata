@@ -3,11 +3,7 @@
 from dataclasses import dataclass
 from typing import Self
 
-from gilded_rose.inn import Item
-
-AGED_BRIE = "Aged Brie"
-SULFURAS = "Sulfuras, Hand of Ragnaros"
-BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
+from gilded_rose.inn import AGED_BRIE, BACKSTAGE_PASSES, SULFURAS, Item
 
 
 @dataclass
