@@ -1,6 +1,5 @@
 """Main module that manages the Gilded Rose inventory system."""
 
-import copy
 from dataclasses import dataclass
 
 AGED_BRIE = "Aged Brie"
@@ -48,6 +47,18 @@ class Item:  # pylint: disable=too-few-public-methods
             quality = 80
             sell_in = self.sell_in
 
+        if self._backstage_passes:
+            quality = min(50, self.quality + 1)
+
+        if self._backstage_passes and self.sell_in <= 10:
+            quality = min(50, self.quality + 2)
+
+        if self._backstage_passes and self.sell_in <= 5:
+            quality = min(50, self.quality + 3)
+
+        if self._backstage_passes and self.sell_in <= 0:
+            quality = 0
+
         return Item(self.name, sell_in=sell_in, quality=quality)
 
     def __repr__(self):
@@ -56,37 +67,7 @@ class Item:  # pylint: disable=too-few-public-methods
 
 def update_quality(items: list[Item]):  # pylint: disable=too-many-branches
     """Update the quality and sell-in values of items in the inventory."""
-    new_items = []
-    for old_item in items:  # pylint: disable=too-many-nested-blocks
-        item = copy.deepcopy(old_item)
-
-        if item.name not in (BACKSTAGE_PASSES):
-            new_items.append(item.compute_after_a_day())
-            continue
-
-        if item.name != "Backstage passes to a TAFKAL80ETC concert":
-            if item.quality > 0:
-                item.quality = item.quality - 1
-        else:
-            if item.quality < 50:
-                item.quality = item.quality + 1
-                if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                    if item.sell_in < 11:
-                        if item.quality < 50:
-                            item.quality = item.quality + 1
-                    if item.sell_in < 6:
-                        if item.quality < 50:
-                            item.quality = item.quality + 1
-        item.sell_in = item.sell_in - 1
-        if item.sell_in < 0:
-            if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    item.quality = item.quality - 1
-            else:
-                item.quality = item.quality - item.quality
-        new_items.append(item)
-
-    return new_items
+    return [item.compute_after_a_day() for item in items]
 
 
 class GildedRose:  # pylint: disable=too-few-public-methods
