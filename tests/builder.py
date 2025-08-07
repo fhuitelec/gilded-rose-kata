@@ -55,6 +55,8 @@ class ItemBuilder:
             raise CannotBeEnnoblingAndLegendaryError()
 
         self._is_legendary = True
+        self._quality = 80
+        self._sell_in_date = 0
         return self
 
     def build(self) -> Item:
