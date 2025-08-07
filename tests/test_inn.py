@@ -108,3 +108,55 @@ def test_legendary_never_sells_or_degrades():
     # Assert
     assert items[0].quality == 80
     assert items[0].sell_in == 0
+
+
+def test_backstage_passes_ennobles_with_time():
+    """Test that the quality of Backstage Passes increases over time."""
+    # Arrange
+    item = an_item().backstage_passes().sell_in(20).with_quality(5).build()
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert item.quality == 6
+
+
+def test_backstage_passes_ennobles_twice_as_much_when_sell_date_is_less_than_10_days():
+    """Test that the quality of Backstage Passes increases twice as much when the sell date is less than 10 days."""
+    # Arrange
+    item = an_item().backstage_passes().sell_in(8).with_quality(5).build()
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert item.quality == 7
+
+
+def test_backstage_passes_ennobles_three_times_as_much_when_sell_date_is_less_than_5_days():
+    """Test that the quality of Backstage Passes increases three times as much when the sell date is less than 5 days."""
+    # Arrange
+    item = an_item().backstage_passes().sell_in(4).with_quality(5).build()
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert item.quality == 8
+
+
+def test_backstage_passes_quality_drops_to_zero_when_sell_date_has_passed():
+    """Test that the quality of Backstage Passes drops to zero when the sell date has passed."""
+    # Arrange
+    item = an_item().backstage_passes().sell_in(0).with_quality(5).build()
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert item.quality == 0
