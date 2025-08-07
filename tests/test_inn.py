@@ -1,5 +1,7 @@
 """Test suite for the Gilded Rose inventory system."""
 
+import pytest
+
 from gilded_rose.inn import GildedRose, Item
 from tests.builder import an_item
 
@@ -224,3 +226,19 @@ def test_conjured_legendary_items_never_degrade():
     # Assert
     assert gilded_rose.items[0].quality == 80
     assert gilded_rose.items[0].sell_in == 0
+
+
+@pytest.mark.parametrize(("sell_in", "expected"), [(20, 7), (10, 9), (5, 11), (0, 0)])
+def test_conjured_backstage_passes_ennobles_twice_as_fast_with_time(sell_in, expected):
+    """Test that conjured backstage passes increase in quality over time."""
+    # Arrange
+    item = (
+        an_item().conjured().backstage_passes().sell_in(sell_in).with_quality(5).build()
+    )
+
+    # Act
+    sut = GildedRose([item])
+    sut.update_quality()
+
+    # Assert
+    assert sut.items[0].quality == expected

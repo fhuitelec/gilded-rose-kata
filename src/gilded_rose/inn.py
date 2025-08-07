@@ -52,13 +52,13 @@ class Item:  # pylint: disable=too-few-public-methods
             sell_in = self.sell_in
 
         if self._backstage_passes:
-            quality = min(50, self.quality + 1)
+            quality = min(50, self.quality + 1 * quality_multiplier)
 
         if self._backstage_passes and self.sell_in <= 10:
-            quality = min(50, self.quality + 2)
+            quality = min(50, self.quality + 2 * quality_multiplier)
 
         if self._backstage_passes and self.sell_in <= 5:
-            quality = min(50, self.quality + 3)
+            quality = min(50, self.quality + 3 * quality_multiplier)
 
         if self._backstage_passes and self.sell_in <= 0:
             quality = 0
