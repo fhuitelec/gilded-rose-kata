@@ -7,6 +7,7 @@ from gilded_rose.inn import Item
 
 AGED_BRIE = "Aged Brie"
 SULFURAS = "Sulfuras, Hand of Ragnaros"
+BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
 
 
 @dataclass
@@ -15,6 +16,7 @@ class ItemBuilder:
 
     _ennobles: bool = False
     _is_legendary: bool = False
+    _is_backstage_passes: bool = False
     _sell_in_date: int = 4
     _quality: int = 5
 
@@ -24,6 +26,8 @@ class ItemBuilder:
             return AGED_BRIE
         if self._is_legendary:
             return SULFURAS
+        if self._is_backstage_passes:
+            return BACKSTAGE_PASSES
         return "foo"
 
     def with_quality(self, quality: int) -> Self:
@@ -43,20 +47,28 @@ class ItemBuilder:
 
     def ennobling(self) -> Self:
         """Markthe item to build as an article which ennobles over time."""
-        if self._is_legendary:
-            raise CannotBeEnnoblingAndLegendaryError()
+        if self._is_legendary or self._is_backstage_passes:
+            raise InconsistentCharacteristicsError()
 
         self._ennobles = True
         return self
 
     def legendary(self) -> Self:
         """Markthe item to build as an article which ennobles over time."""
-        if self._ennobles:
-            raise CannotBeEnnoblingAndLegendaryError()
+        if self._ennobles or self._is_backstage_passes:
+            raise InconsistentCharacteristicsError()
 
         self._is_legendary = True
         self._quality = 80
         self._sell_in_date = 0
+        return self
+
+    def backstage_passes(self) -> Self:
+        """Mark the item to build as a Backstage Pass."""
+        if self._ennobles or self._is_legendary:
+            raise InconsistentCharacteristicsError()
+
+        self._is_backstage_passes = True
         return self
 
     def build(self) -> Item:
@@ -69,11 +81,11 @@ def an_item() -> ItemBuilder:
     return ItemBuilder()
 
 
-class CannotBeEnnoblingAndLegendaryError(ValueError):
-    """Error to raise when trying to create an item both legendary & ennobling."""
+class InconsistentCharacteristicsError(ValueError):
+    """Error to raise when trying to create an item with inconsistent characteristics."""
 
     def __init__(self):
         """Instantiate the exception."""
         super().__init__(
-            "An item cannot ennoble with time and be legendary at the same time"
+            "An item cannot ennoble with time, legendary or backstage passes at the same time"
         )
