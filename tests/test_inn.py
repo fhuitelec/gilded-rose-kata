@@ -1,6 +1,7 @@
 """Test suite for the Gilded Rose inventory system."""
 
 from gilded_rose.inn import GildedRose, Item
+from tests.builder import an_item
 
 AGED_BRIE = "Aged Brie"
 
@@ -72,7 +73,7 @@ def test_aged_brie_ennobles_quality_over_time():
 def test_quality_cannot_exceed_50():
     """Test that the quality of Aged Brie does not exceed 50."""
     # Arrange
-    items = [Item(AGED_BRIE, sell_in=10, quality=50)]
+    items = [an_item().ennobling().with_quality(50).build()]
     gilded_rose = GildedRose(items)
 
     # Act
@@ -82,10 +83,10 @@ def test_quality_cannot_exceed_50():
     assert items[0].quality == 50
 
 
-def test_aged_brie_ennobles_twice_as_fast_after_sell_in_date_is_passed():
+def test_ennobling_items_ennobles_twice_as_fast_after_sell_in_date_is_passed():
     """Test that the quality of Aged Brie increases twice as fast after the sell-in date has passed."""
     # Arrange
-    items = [Item(AGED_BRIE, sell_in=0, quality=20)]
+    items = [an_item().with_quality(20).ennobling().expired().build()]
     gilded_rose = GildedRose(items)
 
     # Act
