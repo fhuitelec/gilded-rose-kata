@@ -3,8 +3,6 @@
 from gilded_rose.inn import GildedRose, Item
 from tests.builder import an_item
 
-AGED_BRIE = "Aged Brie"
-
 
 def test_quality_degrades_over_time():
     """Test that the quality of an item decreases over time."""
@@ -60,7 +58,7 @@ def test_quality_cannot_get_negative():
 def test_aged_brie_ennobles_quality_over_time():
     """Test that the quality of Aged Brie increases over time."""
     # Arrange
-    items = [Item(AGED_BRIE, sell_in=10, quality=20)]
+    items = [an_item().ennobling().sell_in(10).with_quality(20).build()]
     gilded_rose = GildedRose(items)
 
     # Act
@@ -178,7 +176,7 @@ def test_conjured_items_degrade_twice_as_fast():
 def test_conjured_items_degrade_4_times_as_fast_after_sell_in_date_is_passed():
     """Test that the quality of conjured items degrades four times as fast after the sell-in date."""
     # Arrange
-    items = [Item("Conjured Mana Cake", sell_in=0, quality=6)]
+    items = [an_item().conjured().expired().with_quality(6).build()]
     gilded_rose = GildedRose(items)
 
     # Act
@@ -186,3 +184,29 @@ def test_conjured_items_degrade_4_times_as_fast_after_sell_in_date_is_passed():
 
     # Assert
     assert gilded_rose.items[0].quality == 2
+
+
+def test_conjured_ennobling_items_ennobles_twice_as_fast():
+    """Test that conjured ennobling items increase quality twice as fast."""
+    # Arrange
+    items = [an_item().conjured().ennobling().sell_in(10).with_quality(20).build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert gilded_rose.items[0].quality == 22
+
+
+def test_conjured_ennobling_items_ennobles_four_times_as_fast_after_sell_in_date_is_passed():
+    """Test that conjured ennobling items increase quality four times as fast after the sell-in date."""
+    # Arrange
+    items = [an_item().conjured().ennobling().expired().with_quality(20).build()]
+    gilded_rose = GildedRose(items)
+
+    # Act
+    gilded_rose.update_quality()
+
+    # Assert
+    assert gilded_rose.items[0].quality == 24

@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Self
 
-from gilded_rose.inn import AGED_BRIE, BACKSTAGE_PASSES, SULFURAS, Item
+from gilded_rose.inn import AGED_BRIE, BACKSTAGE_PASSES, CONJURED_PREFIX, SULFURAS, Item
 
 
 @dataclass
@@ -15,20 +15,27 @@ class ItemBuilder:
     _is_backstage_passes: bool = False
     _sell_in_date: int = 4
     _quality: int = 5
+    _conjured: bool = False
 
     def _name(self) -> str:
         """Compute the item's name depending on its characteristics."""
+        prefix = CONJURED_PREFIX if self._conjured else ""
         if self._ennobles:
-            return AGED_BRIE
+            return prefix + AGED_BRIE
         if self._is_legendary:
-            return SULFURAS
+            return prefix + SULFURAS
         if self._is_backstage_passes:
-            return BACKSTAGE_PASSES
-        return "foo"
+            return prefix + BACKSTAGE_PASSES
+        return prefix + "foo"
 
     def with_quality(self, quality: int) -> Self:
         """Add a specific quality to the item to build."""
         self._quality = quality
+        return self
+
+    def conjured(self) -> Self:
+        """Mark the item to build as a conjured item."""
+        self._conjured = True
         return self
 
     def expired(self) -> Self:
