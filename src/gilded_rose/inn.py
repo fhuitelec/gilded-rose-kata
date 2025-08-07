@@ -39,11 +39,16 @@ class Item:  # pylint: disable=too-few-public-methods
         quality_variation = 1 if self.sell_in > 0 else 2
 
         quality = max(0, self.quality - quality_variation)
+        sell_in = self.sell_in - 1
 
         if self._ennobling:
             quality = min(50, self.quality + quality_variation)
 
-        return Item(self.name, sell_in=self.sell_in - 1, quality=quality)
+        if self._legendary:
+            quality = 80
+            sell_in = self.sell_in
+
+        return Item(self.name, sell_in=sell_in, quality=quality)
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)  # pylint: disable=consider-using-f-string
@@ -55,14 +60,13 @@ def update_quality(items: list[Item]):  # pylint: disable=too-many-branches
     for old_item in items:  # pylint: disable=too-many-nested-blocks
         item = copy.deepcopy(old_item)
 
-        if item.name not in (BACKSTAGE_PASSES, SULFURAS):
+        if item.name not in (BACKSTAGE_PASSES):
             new_items.append(item.compute_after_a_day())
             continue
 
         if item.name != "Backstage passes to a TAFKAL80ETC concert":
             if item.quality > 0:
-                if item.name != "Sulfuras, Hand of Ragnaros":
-                    item.quality = item.quality - 1
+                item.quality = item.quality - 1
         else:
             if item.quality < 50:
                 item.quality = item.quality + 1
@@ -73,13 +77,11 @@ def update_quality(items: list[Item]):  # pylint: disable=too-many-branches
                     if item.sell_in < 6:
                         if item.quality < 50:
                             item.quality = item.quality + 1
-        if item.name != "Sulfuras, Hand of Ragnaros":
-            item.sell_in = item.sell_in - 1
+        item.sell_in = item.sell_in - 1
         if item.sell_in < 0:
             if item.name != "Backstage passes to a TAFKAL80ETC concert":
                 if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        item.quality = item.quality - 1
+                    item.quality = item.quality - 1
             else:
                 item.quality = item.quality - item.quality
         new_items.append(item)
